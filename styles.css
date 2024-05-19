@@ -92,7 +92,7 @@ main {
 }
 
 .icon-button {
-    background-image: url(/Assets/silver_coin.png);
+    background-image: url(Assets/silver_coin.png);
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -111,7 +111,7 @@ main {
 }
 
 .icon-page {
-    background-image: url(/Assets/Forest.png);
+    background-image: url(Assets/Forest.png);
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -154,7 +154,7 @@ main {
     left: 10px;
     width: 20px;
     height: 20px;
-    background-image: url(/Assets/Forest.png);
+    background-image: url(Assets/Forest.png);
     background-size: cover;
 }
 
@@ -233,7 +233,7 @@ main {
     margin-right: 10px;
     width: 20px;
     height: 20px;
-    background-image: url(/Assets/PICKAXE.png);
+    background-image: url(Assets/PICKAXE.png);
     background-size: cover;
 }
 
@@ -268,7 +268,7 @@ main {
     margin-right: 10px;
     width: 20px;
     height: 20px;
-    background-image: url(/Assets/Mountain.png);
+    background-image: url(Assets/Mountain.png);
     background-size: cover;
 }
 
@@ -276,7 +276,7 @@ main {
     margin-right: 10px;
     width: 20px;
     height: 20px;
-    background-image: url(/Assets/Beach.png);
+    background-image: url(Assets/Beach.png);
     background-size: cover;
 }
 

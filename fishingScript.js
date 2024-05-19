@@ -52,17 +52,17 @@ function goFishing() {
         if (random < 0.25) {
             message += "Yellow Perch";
             yellowPerchCount++;
-            showDiscoveryImage('/Assets/yellow_perch.png');
+            showDiscoveryImage('Assets/yellow_perch.png');
         } else {
             message += "Trout";
             troutCount++;
-            showDiscoveryImage('/Assets/trout.png');
+            showDiscoveryImage('Assets/trout.png');
         }
         displayMessage(message);
         saveItems();
     } else {
         displayMessage("You have fished in this area but found nothing.");
-        showDiscoveryImage('/Assets/no_item.png');
+        showDiscoveryImage('Assets/no_item.png');
     }
 
     updateUI();

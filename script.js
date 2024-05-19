@@ -52,17 +52,17 @@ function goExploring() {
         if (random < 0.3) {
             message += "Wood";
             woodCount++;
-            showDiscoveryImage('/Assets/wood.png');
+            showDiscoveryImage('Assets/wood.png');
         } else {
             message += "Stone";
             stoneCount++;
-            showDiscoveryImage('/Assets/stone.png');
+            showDiscoveryImage('Assets/stone.png');
         }
         displayMessage(message);
         saveItems();
     } else {
         displayMessage("You explored the area but found nothing.");
-        showDiscoveryImage('/Assets/no_item.png');
+        showDiscoveryImage('Assets/no_item.png');
     }
 
     updateUI();
