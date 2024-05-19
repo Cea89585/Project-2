@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="exploring.html">Exploring</a>
+        <a href="shop.html">Workshop</a>
+        <a href="about.html">About</a>
+    </nav>
+    <header>
+        <h1>Welcome to the game</h1>
+        <button class="nav-button1" onclick="window.location.href='inventory.html'">
+            <span class="icon-img3"></span>
+            <span class="icon-text">Inventory</span>
+        </button>
+        <button class="nav-button1" onclick="window.location.href='fishing.html'">
+            <span class="icon-img4"></span>
+            <span class="icon-text">Fishing</span>
+        </button>
+    </header>
+    <main>
+        <div class="bottom-column">
+            <button class="icon-button"></button>
+            <span class="icon-text" id="silverEarned">0</span>        
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 We Survive. All rights reserved.</p>
+        <p>Contacts: cea89585@gamil.com</p>
+    </footer>
+    <script>
+        function loadSilver() {
+            let totalSilver = parseInt(localStorage.getItem("totalSilver")) || 0;
+            document.getElementById("silverEarned").textContent = totalSilver;
+        }
+        document.addEventListener("DOMContentLoaded", loadSilver);
+    </script>
+</body>
+</html>

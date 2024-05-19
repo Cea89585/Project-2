@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forest</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="exploring.html">Exploring</a>
+        <a href="shop.html">Workshop</a>
+        <a href="about.html">About</a>
+    </nav>
+    <header>
+        <button class="back-button" onclick="goBack()">Back</button>
+        <h1>Welcome to the forrest</h1>
+        <div class="content">
+            <div id="introText">
+                <p>Walking around and looking</p>
+            </div>
+            <div id="itemIconsContainer" class="window">
+                <div id="itemIcons"></div>
+            </div>
+            <div id="itemInfoRect">
+                <div id="item-icon">
+                    <img src="/Assets/Wood.png" alt="Item Icon">
+                </div>
+                <p class="itemCountDisplay" id="woodCountRect">0</p>
+                <div id="item-icon">
+                    <img src="/Assets/Stone.png" alt="Item Icon">
+                </div>
+                <p class="itemCountDisplay" id="stoneCountRect">0</p>
+            </div>
+            <div id="itemInfo">
+                <p id="itemCount"></p>
+                <div id="message"></div>
+            </div>
+        </div>
+        <button id="exploreButton" class="nav-button1">Go Exploring</button>
+    </header>
+    <footer>
+        <p>&copy; 2024 We Survive. All rights reserved.</p>
+        <p>Contacts: cea89585@gamil.com</p>
+    </footer>
+    <script src="script.js"></script>
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fishing Area</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="exploring.html">Exploring</a>
+        <a href="shop.html">Workshop</a>
+        <a href="about.html">About</a>
+    </nav>
+    <header>
+        <button class="back-button" onclick="goBack()">Back</button>
+        <h1>Welcome to the Fishing Area</h1>
+        <div class="content">
+            <div id="introText">
+                <p>Embark on a fishing adventure and explore the world of WeSurvive!</p>
+            </div>
+            <div id="itemIconsContainer" class="window">
+                <div id="fishIcons"></div>
+            </div>
+            <div id="itemInfoRect">
+                <div id="item-icon">
+                    <img src="/Assets/yellow_perch.png" alt="Fish Icon">
+                </div>
+                <p class="itemCountDisplay" id="yellowPerchCount">0</p>
+                <div id="item-icon">
+                    <img src="/Assets/Trout.png" alt="Fish Icon">
+                </div>
+                <p class="itemCountDisplay" id="troutCount">0</p>
+            </div>
+            <div id="itemInfo">
+                <p id="fishCount"></p>
+                <div id="message"></div>
+            </div>
+        </div>
+        <button id="catchFishButton" class="nav-button1">Catch Fish</button>
+    </header>
+    <footer>
+        <p>&copy; 2024 We Survive. All rights reserved.</p>
+        <p>Contacts: cea89585@gamil.com</p>
+    </footer>
+
+    <script src="fishingScript.js"></script>
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,299 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #c5d0e2;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+h1 {
+    color: #000000;
+    text-align: center;
+}
+
+p {
+    color: #000000;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+nav {
+    position: fixed;
+    width: 100%;
+    background-color: #646464;
+    padding: 10px 0;
+    text-align: center;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-right: 20px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #646464;
+}
+
+nav a:hover {
+    background-color: #555;
+}
+
+header {
+    padding-top: 40px;
+    text-align: center;
+}
+
+.image-container {
+    width: 50%;
+    margin: 0 auto;
+    text-align: center;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+#image-container-1,
+#image-container-2 {
+    border: 2px solid #333;
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+#image-container-1 img,
+#image-container-2 img {
+    max-width: calc(100% - 40px);
+    max-height: calc(100% - 40px);
+    display: block;
+    margin: 0 auto;
+}
+
+footer {
+    background-color: #646464;
+    color: #fff;
+    padding: 20px;
+    text-align: left;
+    margin-top: auto;
+}
+
+main {
+    flex: 1;
+}
+
+.bottom-column {
+    position: fixed;
+    bottom: 140px;
+    left: 0;
+    width: 100%;
+    background-color: #f0f0f0;
+    padding: 10px;
+    text-align: center;
+}
+
+.icon-button {
+    background-image: url(/Assets/silver_coin.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 15px;
+    height: 15px;
+    border: none;
+    outline: none;
+    float: left;
+    margin-right: 10px;
+}
+
+.icon-text {
+    font-size: 14px;
+    line-height: 15px;
+    float: left;
+}
+
+.icon-page {
+    background-image: url(/Assets/Forest.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    margin-right: 10px;
+}
+
+.icon-page-text {
+    font-size: 14px;
+    line-height: 15px;
+    display: inline-block;
+}
+
+.nav-button1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
+    padding: 20px 20px;
+    width: 150px;
+    background-color: #3498db;
+    color: #fff;
+    text-decoration: none;
+    text-align: center;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+    position: relative;
+}
+
+.nav-button1:hover {
+    background-color: #2980b9;
+}
+
+.icon-img {
+    position: absolute;
+    left: 10px;
+    width: 20px;
+    height: 20px;
+    background-image: url(/Assets/Forest.png);
+    background-size: cover;
+}
+
+.back-button {
+    position: absolute;
+    top: 65px;
+    left: 20px;
+    margin: 0;
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.back-button:hover {
+    background-color: #2980b9;
+}
+
+#itemIconsContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#itemInfoRect {
+    position: fixed;
+    top: 65px;
+    right: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+#item-icon img{
+    position: center;
+    left: 10px;
+    width: 20px;
+    height: 20px;
+    background-size: cover;
+}
+
+.itemCountDisplay {
+    color: #000;
+    font-weight: bold;
+    margin-top: 5px;
+    text-align: center;
+}
+
+.nav-button2 {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 20px auto;
+    padding: 20px 20px;
+    width: calc(100% - 40px);
+    background-color: #8a9196;
+    color: #fff;
+    text-decoration: none;
+    text-align: center;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+    position: relative;
+}
+
+.icon-img2 {
+    margin-right: 10px;
+    width: 20px;
+    height: 20px;
+    background-image: url(/Assets/PICKAXE.png);
+    background-size: cover;
+}
+
+.icon-text2 {
+    flex: 1;
+    padding-top: 5px;
+    padding-left: 10px;
+    text-align: left;
+    color: #2a2d30;
+}
+
+#forge-button {
+    position: fixed;
+    top: 350px;
+    right: 50px;
+    z-index: 999;
+}
+
+#forge-button button {
+    padding: 8px 12px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    color: #2a2d30;
+}
+
+#forge-button:hover {
+    background-color: #f3e9e9;
+}
+
+.icon-img3 {
+    margin-right: 10px;
+    width: 20px;
+    height: 20px;
+    background-image: url(/Assets/Mountain.png);
+    background-size: cover;
+}
+
+.icon-img4 {
+    margin-right: 10px;
+    width: 20px;
+    height: 20px;
+    background-image: url(/Assets/Beach.png);
+    background-size: cover;
+}
+
+.sell-button {
+    position: absolute;
+    top: 65px;
+    right: 20px;
+    margin: 0;
+    padding: 10px 20px;
+    background-color: #f73535;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.sell-button:hover {
+    background-color: #2980b9;
+}

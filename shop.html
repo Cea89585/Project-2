@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workshop</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="exploring.html">Exploring</a>
+        <a href="shop.html">Workshop</a>
+        <a href="about.html">About</a>
+    </nav>
+    <header>
+        <h1>Welcome to the workshop</h1>
+    </header>
+    <main>
+        <div class="bottom-column">
+            <button class="icon-button"></button>
+            <span class="icon-text" id="silverEarned">0</span>        
+        </div>
+        <div id="shopItems">
+            <h2>Shop Items</h2>
+            <p>Wood: <span id="woodAmount">0</span></p>
+            <p>Stone: <span id="stoneAmount">0</span></p>
+            <p>Pickaxe: <span id="pickaxeAmount">0</span></p>
+        </div>
+        <button class="nav-button2">
+            <span class="icon-img2"></span>
+            <span class="icon-text"><h1>Pickaxe</h1></span>
+            <span class="icon-text2"><h6>Required items: 10 x Wood + 15 x Stone</h6></span>
+        </button>
+        <div id="forge-button">
+            <button>Forge</button>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 We Survive. All rights reserved.</p>
+        <p>Contacts: cea89585@gamil.com</p>
+    </footer>
+    <script src="forgeScript.js"></script>
+    <script>
+        function loadItems() {
+            let woodCount = parseInt(localStorage.getItem("woodCount")) || 0;
+            let stoneCount = parseInt(localStorage.getItem("stoneCount")) || 0;
+            let pickaxeCount = parseInt(localStorage.getItem("pickaxeCount")) || 0;
+            document.getElementById("woodAmount").textContent = woodCount;
+            document.getElementById("stoneAmount").textContent = stoneCount;
+            document.getElementById("pickaxeAmount").textContent = pickaxeCount;
+        }
+        document.addEventListener("DOMContentLoaded", loadItems);
+    </script>
+    <script>
+        function loadSilver() {
+            let totalSilver = parseInt(localStorage.getItem("totalSilver")) || 0;
+            document.getElementById("silverEarned").textContent = totalSilver;
+        }
+        document.addEventListener("DOMContentLoaded", loadSilver);
+    </script>
+</body>
+</html>
