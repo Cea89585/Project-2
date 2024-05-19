@@ -297,3 +297,14 @@ main {
 .sell-button:hover {
     background-color: #2980b9;
 }
+
+@media only screen and (max-width: 600px) {
+    nav {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    nav a {
+        margin: 5px;
+    }
+}
