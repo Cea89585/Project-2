@@ -52,11 +52,11 @@ function goExploring() {
         if (random < 0.3) {
             message += "Wood";
             woodCount++;
-            showDiscoveryImage('Assets/wood.png');
+            showDiscoveryImage('Assets/Wood.png');
         } else {
             message += "Stone";
             stoneCount++;
-            showDiscoveryImage('Assets/stone.png');
+            showDiscoveryImage('Assets/Stone.png');
         }
         displayMessage(message);
         saveItems();
@@ -101,7 +101,10 @@ function clearExplorationData() {
 }
 
 // Add event listeners
-document.getElementById("exploreButton").addEventListener("click", goExploring);
+const exploreBtn = document.getElementById("exploreButton");
+if (exploreBtn) {
+    exploreBtn.addEventListener("click", goExploring);
+}
 
 // Load items when the document is ready
 document.addEventListener("DOMContentLoaded", loadItems);

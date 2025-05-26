@@ -36,4 +36,7 @@ function forgePickaxe() {
 }
 
 // Add click event listener to Forge button
-document.getElementById("forge-button").addEventListener("click", forgePickaxe);
+const forgeBtn = document.querySelector("#forge-button button");
+if (forgeBtn) {
+    forgeBtn.addEventListener("click", forgePickaxe);
+}

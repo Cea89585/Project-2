@@ -105,7 +105,10 @@ function clearFishingData() {
 }
 
 // Add event listeners
-document.getElementById("catchFishButton").addEventListener("click", goFishing);
+const catchFishBtn = document.getElementById("catchFishButton");
+if (catchFishBtn) {
+    catchFishBtn.addEventListener("click", goFishing);
+}
 
 // Load items when the document is ready
 document.addEventListener("DOMContentLoaded", loadItems);
