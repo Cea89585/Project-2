@@ -11,7 +11,9 @@
     <nav>
         <a href="index.html">Home</a>
         <a href="exploring.html">Exploring</a>
-        <a href="shop.html">Workshop</a>
+        <a href="workshop.html">Workshop</a>
+        <a href="fishing.html">Fishing</a>
+        <a href="shop.html">Shop</a>
         <a href="about.html">About</a>
     </nav>
     <header>
@@ -19,23 +21,21 @@
         <button class="back-button" onclick="goBack()">Back</button>
     </header>
     <main>
-        <div>
-            <button id="sellButton" class="sell-button">Sell</button>
-        </div>
+        <a href="shop.html" class="nav-button1">Go to Shop</a>
         <div class="bottom-column">
             <button class="icon-button"></button>
             <span class="icon-text" id="silverEarned">0</span>        
         </div>
         <div id="shopItems">
             <h2>Shop Items</h2>
-            <p>Wood: <span id="woodAmount">0</span> - Price (per item): <span id="woodPrice">5</span></p>
-            <p>Stone: <span id="stoneAmount">0</span> - Price (per item): <span id="stonePrice">10</span></p>
-            <p>Pickaxe: <span id="pickaxeAmount">0</span> - Price (per item): <span id="pickaxePrice">20</span></p>
+            <p>Wood: <span id="woodAmount">0</span></p>
+            <p>Stone: <span id="stoneAmount">0</span></p>
+            <p>Pickaxe: <span id="pickaxeAmount">0</span></p>
         </div>
         <div id="fishItems">
             <h2>Fish Items</h2>
-            <p>Yellow Perch: <span id="yellowPerchAmount">0</span> - Price (per item): <span id="yellowPerchPrice">15</span></p>
-            <p>Trout: <span id="troutAmount">0</span> - Price (per item): <span id="troutPrice">25</span></p>
+            <p>Yellow Perch: <span id="yellowPerchAmount">0</span></p>
+            <p>Trout: <span id="troutAmount">0</span></p>
         </div>
     </main>
     <footer>
@@ -64,38 +64,7 @@
             document.getElementById("silverEarned").textContent = totalSilver;
         }
 
-        function sellItems() {
-            let woodPrice = parseInt(document.getElementById("woodPrice").textContent);
-            let stonePrice = parseInt(document.getElementById("stonePrice").textContent);
-            let pickaxePrice = parseInt(document.getElementById("pickaxePrice").textContent);
-
-            let woodCount = parseInt(localStorage.getItem("woodCount")) || 0;
-            let stoneCount = parseInt(localStorage.getItem("stoneCount")) || 0;
-            let pickaxeCount = parseInt(localStorage.getItem("pickaxeCount")) || 0;
-
-            let yellowPerchCount = parseInt(localStorage.getItem("yellowPerchCount")) || 0;
-            let troutCount = parseInt(localStorage.getItem("troutCount")) || 0;
-
-            let yellowPerchPrice = parseInt(document.getElementById("yellowPerchPrice").textContent);
-            let troutPrice = parseInt(document.getElementById("troutPrice").textContent);
-
-            let totalSilver = (woodCount * woodPrice) + (stoneCount * stonePrice) + (pickaxeCount * pickaxePrice) + 
-                              (yellowPerchCount * yellowPerchPrice) + (troutCount * troutPrice);
-
-            totalSilver += parseInt(localStorage.getItem("totalSilver")) || 0;
-
-            localStorage.setItem("woodCount", "0");
-            localStorage.setItem("stoneCount", "0");
-            localStorage.setItem("pickaxeCount", "0");
-            localStorage.setItem("yellowPerchCount", "0");
-            localStorage.setItem("troutCount", "0");
-            localStorage.setItem("totalSilver", totalSilver);
-            document.getElementById("silverEarned").textContent = totalSilver;
-            loadItems();
-        }
-
         document.addEventListener("DOMContentLoaded", loadItems);
-        document.getElementById("sellButton").addEventListener("click", sellItems);
     </script>
 </body>
 </html>

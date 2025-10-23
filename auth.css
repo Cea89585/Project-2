@@ -1,0 +1,85 @@
+/* auth.css */
+
+/* Center the authentication container */
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh; /* Make it take up most of the viewport height */
+    padding: 20px;
+}
+
+/* Style the authentication box */
+.auth-box {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 30px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.auth-box h2 {
+    margin-bottom: 25px;
+    color: #333;
+    font-size: 24px;
+}
+
+/* Style the input fields */
+.auth-box input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box; /* Ensures padding doesn't affect width */
+}
+
+/* Group the buttons for better layout */
+.auth-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px; /* Add space between buttons */
+    margin-top: 20px;
+}
+
+/* Style the buttons */
+.auth-box button {
+    flex: 1; /* Allow buttons to grow equally */
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.auth-box button:hover {
+    background-color: #0056b3;
+}
+
+/* Style the logout button differently */
+#logoutButton {
+    background-color: #dc3545; /* Red color for logout */
+}
+
+#logoutButton:hover {
+    background-color: #c82333;
+}
+
+/* Hide the logout button by default */
+.hidden {
+    display: none;
+}
+
+/* Style the message area */
+#authMessage {
+    margin-top: 20px;
+    color: #dc3545; /* Red for error messages */
+    font-size: 14px;
+    min-height: 20px; /* Reserve space to prevent layout shifts */
+}

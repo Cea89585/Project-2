@@ -11,7 +11,9 @@
     <nav>
         <a href="index.html">Home</a>
         <a href="exploring.html">Exploring</a>
-        <a href="shop.html">Workshop</a>
+        <a href="workshop.html">Workshop</a>
+        <a href="fishing.html">Fishing</a>
+        <a href="shop.html">Shop</a>
         <a href="about.html">About</a>
     </nav>
     <header>
@@ -35,6 +37,9 @@
         <p>&copy; 2024 We Survive. All rights reserved.</p>
         <p>Contacts: cea89585@gmail.com</p>
     </footer>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+    <script src="firebase-config.js"></script>
     <script>
         function loadSilver() {
             let totalSilver = parseInt(localStorage.getItem("totalSilver")) || 0;

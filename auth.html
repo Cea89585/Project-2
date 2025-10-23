@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login / Sign Up</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+    <nav>
+        <a href="index.html">Home</a>
+    </nav>
+    <header>
+        <h1>Welcome</h1>
+        <p>Please log in or sign up to continue</p>
+    </header>
+
+    <main>
+        <div class="auth-container">
+            <div class="auth-box">
+                <h2>Authentication</h2>
+                <input type="email" id="email" placeholder="Enter your email" required>
+                <input type="password" id="password" placeholder="Enter your password" required>
+                <div class="auth-buttons">
+                    <button id="signupButton">Sign Up</button>
+                    <button id="loginButton">Login</button>
+                    <button id="logoutButton" class="hidden">Logout</button>
+                </div>
+                <p id="authMessage"></p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 We Survive. All rights reserved.</p>
+    </footer>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+    
+    <!-- Config and Auth Logic -->
+    <script src="firebase-config.js"></script>
+    <script src="auth.js"></script>
+</body>
+</html>

@@ -10,7 +10,9 @@
     <nav>
         <a href="index.html">Home</a>
         <a href="exploring.html">Exploring</a>
-        <a href="shop.html">Workshop</a>
+        <a href="workshop.html">Workshop</a>
+        <a href="fishing.html">Fishing</a>
+        <a href="shop.html">Shop</a>
         <a href="about.html">About</a>
     </nav>
     <header>
@@ -39,13 +41,16 @@
             </div>
         </div>
         <button id="catchFishButton" class="nav-button1">Catch Fish</button>
-        <button id="sellFishButton" class="nav-button1">Sell Fish</button>
+        <a href="shop.html" class="nav-button1">Go to Shop</a>
     </header>
     <footer>
         <p>&copy; 2024 We Survive. All rights reserved.</p>
         <p>Contacts: cea89585@gmail.com</p>
     </footer>
 
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+    <script src="firebase-config.js"></script>
     <script src="fishingScript.js"></script>
     <script>
         function goBack() {
