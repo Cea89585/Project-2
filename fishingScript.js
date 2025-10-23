@@ -1,3 +1,4 @@
+
 // Define variables
 let fishCount = 0;
 let yellowPerchCount = 0;
@@ -68,6 +69,31 @@ function goFishing() {
     updateUI();
 }
 
+// Function to sell all fish
+function sellFish() {
+    let yellowPerchPrice = 2; 
+    let troutPrice = 4; 
+
+    let silverEarned = (yellowPerchCount * yellowPerchPrice) + (troutCount * troutPrice);
+
+    if (silverEarned > 0) {
+        let totalSilver = parseInt(localStorage.getItem("totalSilver")) || 0;
+        totalSilver += silverEarned;
+        localStorage.setItem("totalSilver", totalSilver);
+
+        yellowPerchCount = 0;
+        troutCount = 0;
+        fishCount = 0;
+        
+        saveItems();
+        updateUI();
+        displayMessage(`You sold all your fish for ${silverEarned} silver!`);
+    } else {
+        displayMessage("You have no fish to sell.");
+    }
+}
+
+
 // Function to save items to local/session storage
 function saveItems() {
     sessionStorage.setItem("fishCount", fishCount);
@@ -109,6 +135,12 @@ const catchFishBtn = document.getElementById("catchFishButton");
 if (catchFishBtn) {
     catchFishBtn.addEventListener("click", goFishing);
 }
+
+const sellFishBtn = document.getElementById("sellFishButton");
+if (sellFishBtn) {
+    sellFishBtn.addEventListener("click", sellFish);
+}
+
 
 // Load items when the document is ready
 document.addEventListener("DOMContentLoaded", loadItems);
