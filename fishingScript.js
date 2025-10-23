@@ -10,9 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
             userId = user.uid;
             loadItems();
         } else {
-            if (window.location.pathname !== '/auth.html') {
-                window.location.href = 'auth.html';
-            }
+            // nav.js should handle the redirect
         }
     });
 });
