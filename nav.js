@@ -8,7 +8,9 @@ document.addEventListener("DOMContentLoaded", () => {
             userId = user.uid;
             loadNavSilver();
         } else {
-            if (window.location.pathname !== '/auth.html') {
+            // If the user is not logged in, redirect them to the auth page,
+            // unless they are already on it.
+            if (!window.location.href.includes('auth.html')) {
                 window.location.href = 'auth.html';
             }
         }
