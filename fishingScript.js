@@ -1,18 +1,15 @@
 
 let yellowPerchCount = 0;
 let troutCount = 0;
-let userId = null; // Will be set on authentication
+let userId = null;
 
 // --- Authentication Check ---
 document.addEventListener("DOMContentLoaded", () => {
     auth.onAuthStateChanged(user => {
         if (user) {
-            // User is signed in.
             userId = user.uid;
-            loadItems(); // Load user's inventory
+            loadItems();
         } else {
-            // No user is signed in.
-            // Redirect to the login page if not already on it
             if (window.location.pathname !== '/auth.html') {
                 window.location.href = 'auth.html';
             }
@@ -21,116 +18,113 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // --- Firestore Functions ---
-
-// Function to save items to Firestore
-function saveItems() {
-    if (db && userId) {
-        db.collection("users").doc(userId).set({
-            inventory: {
-                yellowPerch: yellowPerchCount,
-                trout: troutCount
-            }
-        }, { merge: true })
-        .then(() => {
-            console.log("Inventory saved to Firestore for user: ", userId);
-        })
-        .catch((error) => {
-            console.error("Error writing document to Firestore: ", error);
-        });
-    }
-}
-
-// Function to load items from Firestore
 function loadItems() {
     if (db && userId) {
-        db.collection("users").doc(userId).get().then((doc) => {
-            if (doc.exists && doc.data().inventory) {
-                const inventory = doc.data().inventory;
-                yellowPerchCount = inventory.yellowPerch || 0;
-                troutCount = inventory.trout || 0;
-                console.log("Inventory loaded from Firestore for user: ", userId);
+        db.collection("users").doc(userId).onSnapshot(doc => {
+            if (doc.exists) {
+                const data = doc.data();
+                if (data.inventory) {
+                    yellowPerchCount = data.inventory.yellowPerch || 0;
+                    troutCount = data.inventory.trout || 0;
+                }
+                console.log("Player data updated.");
             } else {
-                console.log("No inventory found in Firestore for this user, starting new.");
-                yellowPerchCount = 0;
-                troutCount = 0;
+                console.log("No player data found, starting new.");
             }
-            updateUI(); // Update UI after loading data
-        }).catch((error) => {
-            console.error("Error getting document from Firestore:", error);
+            updateUI();
         });
     }
 }
 
-
 // --- UI Functions ---
-
-// Function to display a discovery image
-function showDiscoveryImage(imageSrc) {
-    let itemIconsContainer = document.getElementById('itemIconsContainer');
-    itemIconsContainer.style.display = 'flex';
-
-    let itemIcons = document.getElementById('fishIcons');
-    itemIcons.style.display = 'flex';
-    itemIcons.innerHTML = ''; // Clear previous icon
-
-    let itemIcon = document.createElement('img');
-    itemIcon.src = imageSrc;
-    itemIcon.alt = 'Discovery Image';
-    itemIcon.style.width = '50px';
-    itemIcon.style.height = '50px';
-    itemIcons.appendChild(itemIcon);
-}
-
-// Function to update the UI
 function updateUI() {
-    updateItemIcon('yellowPerchCount', yellowPerchCount);
-    updateItemIcon('troutCount', troutCount);
+    document.getElementById("yellowPerchCount").textContent = yellowPerchCount;
+    document.getElementById("troutCount").textContent = troutCount;
 }
 
-// Function to display a message to the user
+function showFishImage(imageSrc) {
+    const fishIconsContainer = document.getElementById('fishIcons');
+    fishIconsContainer.style.display = 'flex';
+    fishIconsContainer.innerHTML = ''; // Clear previous fish icons
+
+    const fishIcon = document.createElement('img');
+    fishIcon.src = imageSrc;
+    fishIcon.alt = 'Caught Fish';
+    fishIcon.style.width = '50px';
+    fishIcon.style.height = '50px';
+    fishIconsContainer.appendChild(fishIcon);
+}
+
 function displayMessage(message) {
     document.getElementById("message").textContent = message;
 }
 
-// Function to update the count of a specific item icon
-function updateItemIcon(countId, count) {
-    let itemCountDisplay = document.getElementById(countId);
-    if (itemCountDisplay) {
-        itemCountDisplay.textContent = count;
-    }
-}
-
 // --- Game Logic ---
+function catchFish() {
+    const random = Math.random();
+    let message = "Congratulations, you have caught a ";
 
-// Function to handle the fishing action
-function goFishing() {
-    let random = Math.random();
-
-    if (random <= 0.5) {
-        let message = "Congratulations, you have caught a ";
-        if (random < 0.25) {
+    if (random < 0.6) { // 60% chance to catch a fish
+        let itemCaught = null;
+        if (random < 0.4) { // 40% chance for Yellow Perch
             message += "Yellow Perch";
-            yellowPerchCount++;
-            showDiscoveryImage('Assets/yellow_perch.png');
-        } else {
+            itemCaught = "yellowPerch";
+            showFishImage('Assets/yellow_perch.png');
+        } else { // 20% chance for Trout
             message += "Trout";
-            troutCount++;
-            showDiscoveryImage('Assets/trout.png');
+            itemCaught = "trout";
+            showFishImage('Assets/trout.png');
         }
         displayMessage(message);
-        saveItems(); // Save the new inventory to Firestore
-    } else {
-        displayMessage("You have fished in this area but found nothing.");
-        showDiscoveryImage('Assets/no_item.png');
-    }
 
-    updateUI();
+        if (itemCaught && db && userId) {
+            db.collection("users").doc(userId).update({
+                [`inventory.${itemCaught}`]: firebase.firestore.FieldValue.increment(1)
+            });
+        }
+    } else {
+        displayMessage("You fished for a while but didn't catch anything.");
+        showFishImage('Assets/no_item.png');
+    }
 }
 
-// --- Event Listeners ---
+function sellYellowPerch() {
+    if (yellowPerchCount > 0) {
+        db.collection("users").doc(userId).update({
+            "inventory.yellowPerch": firebase.firestore.FieldValue.increment(-1),
+            "totalSilver": firebase.firestore.FieldValue.increment(10)
+        });
+        alert("You sold 1 yellow perch for 10 silver.");
+    } else {
+        alert("You have no yellow perch to sell.");
+    }
+}
 
-// Add event listener for the catch fish button
+function sellTrout() {
+    if (troutCount > 0) {
+        db.collection("users").doc(userId).update({
+            "inventory.trout": firebase.firestore.FieldValue.increment(-1),
+            "totalSilver": firebase.firestore.FieldValue.increment(25)
+        });
+        alert("You sold 1 trout for 25 silver.");
+    } else {
+        alert("You have no trout to sell.");
+    }
+}
+
+
+// --- Event Listeners ---
 const catchFishBtn = document.getElementById("catchFishButton");
 if (catchFishBtn) {
-    catchFishBtn.addEventListener("click", goFishing);
+    catchFishBtn.addEventListener("click", catchFish);
+}
+
+const sellYellowPerchBtn = document.getElementById("sellYellowPerchBtn");
+if (sellYellowPerchBtn) {
+    sellYellowPerchBtn.addEventListener("click", sellYellowPerch);
+}
+
+const sellTroutBtn = document.getElementById("sellTroutBtn");
+if (sellTroutBtn) {
+    sellTroutBtn.addEventListener("click", sellTrout);
 }

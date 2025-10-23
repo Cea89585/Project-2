@@ -1,42 +1,118 @@
-// Get references to the wood and stone counts
-let woodCount = parseInt(localStorage.getItem("woodCount")) || 0;
-let stoneCount = parseInt(localStorage.getItem("stoneCount")) || 0;
 
-// Function to handle forging process
+let woodCount = 0;
+let stoneCount = 0;
+let pickaxeCount = 0;
+let userId = null;
+
+// --- Authentication Check ---
+document.addEventListener("DOMContentLoaded", () => {
+    auth.onAuthStateChanged(user => {
+        if (user) {
+            userId = user.uid;
+            loadItems();
+        } else {
+            if (window.location.pathname !== '/auth.html') {
+                window.location.href = 'auth.html';
+            }
+        }
+    });
+});
+
+// --- Firestore Functions ---
+function loadItems() {
+    if (db && userId) {
+        db.collection("users").doc(userId).onSnapshot(doc => {
+            if (doc.exists) {
+                const data = doc.data();
+                if (data.inventory) {
+                    woodCount = data.inventory.wood || 0;
+                    stoneCount = data.inventory.stone || 0;
+                    pickaxeCount = data.inventory.pickaxe || 0;
+                }
+                console.log("Player data updated.");
+            } else {
+                console.log("No player data found, starting new.");
+            }
+            updateUI();
+        });
+    }
+}
+
+function saveInventory() {
+    if (db && userId) {
+        db.collection("users").doc(userId).set({
+            inventory: {
+                wood: woodCount,
+                stone: stoneCount,
+                pickaxe: pickaxeCount
+            }
+        }, { merge: true })
+        .then(() => console.log("Inventory saved to Firestore"))
+        .catch(error => console.error("Error saving data: ", error));
+    }
+}
+
+// --- UI Functions ---
+function updateUI() {
+    document.getElementById("woodAmount").textContent = woodCount;
+    document.getElementById("stoneAmount").textContent = stoneCount;
+    document.getElementById("pickaxeAmount").textContent = pickaxeCount;
+}
+
+// --- Game Logic ---
 function forgePickaxe() {
     const requiredWood = 10;
     const requiredStone = 15;
 
-    // Check if there is enough wood and stone
     if (woodCount >= requiredWood && stoneCount >= requiredStone) {
-        // Subtract required wood and stone
         woodCount -= requiredWood;
         stoneCount -= requiredStone;
-
-        // Update localStorage with new wood and stone counts
-        localStorage.setItem("woodCount", woodCount);
-        localStorage.setItem("stoneCount", stoneCount);
-
-        // Add or update pickaxe in inventory (this is just an example)
-        // You might want to store inventory items differently
-        let pickaxeCount = parseInt(localStorage.getItem("pickaxeCount")) || 0;
         pickaxeCount++;
-        localStorage.setItem("pickaxeCount", pickaxeCount);
 
-        // Update UI with new wood and stone counts
-        document.getElementById("woodAmount").textContent = woodCount;
-        document.getElementById("stoneAmount").textContent = stoneCount;
-
-        // Display success message to user
+        saveInventory();
         alert("You have successfully forged a pickaxe!");
     } else {
-        // Display error message to user if there are not enough resources
         alert("You do not have enough resources to forge a pickaxe. Collect more wood and stone.");
     }
 }
 
-// Add click event listener to Forge button
+function sellWood() {
+    if (woodCount > 0) {
+        db.collection("users").doc(userId).update({
+            "inventory.wood": firebase.firestore.FieldValue.increment(-1),
+            "totalSilver": firebase.firestore.FieldValue.increment(5)
+        });
+        alert("You sold 1 wood for 5 silver.");
+    } else {
+        alert("You have no wood to sell.");
+    }
+}
+
+function sellStone() {
+    if (stoneCount > 0) {
+        db.collection("users").doc(userId).update({
+            "inventory.stone": firebase.firestore.FieldValue.increment(-1),
+            "totalSilver": firebase.firestore.FieldValue.increment(2)
+        });
+        alert("You sold 1 stone for 2 silver.");
+    } else {
+        alert("You have no stone to sell.");
+    }
+}
+
+
+// --- Event Listeners ---
 const forgeBtn = document.querySelector("#forge-button button");
 if (forgeBtn) {
     forgeBtn.addEventListener("click", forgePickaxe);
+}
+
+const sellWoodBtn = document.getElementById("sellWoodBtn");
+if (sellWoodBtn) {
+    sellWoodBtn.addEventListener("click", sellWood);
+}
+
+const sellStoneBtn = document.getElementById("sellStoneBtn");
+if (sellStoneBtn) {
+    sellStoneBtn.addEventListener("click", sellStone);
 }

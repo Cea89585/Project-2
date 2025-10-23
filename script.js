@@ -1,20 +1,66 @@
-// Define variables
-let itemCount = 0;
+
 let woodCount = 0;
 let stoneCount = 0;
+let totalSilver = 0;
+let userId = null;
 
-// Function to display a discovery image
+// --- Authentication Check ---
+document.addEventListener("DOMContentLoaded", () => {
+    auth.onAuthStateChanged(user => {
+        if (user) {
+            userId = user.uid;
+            loadItems();
+        } else {
+            if (window.location.pathname !== '/auth.html') {
+                window.location.href = 'auth.html';
+            }
+        }
+    });
+});
+
+// --- Firestore Functions ---
+function saveItems() {
+    if (db && userId) {
+        db.collection("users").doc(userId).set({
+            inventory: {
+                wood: woodCount,
+                stone: stoneCount
+            }
+        }, { merge: true })
+        .then(() => console.log("Inventory saved to Firestore"))
+        .catch(error => console.error("Error saving inventory: ", error));
+    }
+}
+
+function loadItems() {
+    if (db && userId) {
+        db.collection("users").doc(userId).get().then(doc => {
+            if (doc.exists) {
+                const data = doc.data();
+                if (data.inventory) {
+                    woodCount = data.inventory.wood || 0;
+                    stoneCount = data.inventory.stone || 0;
+                }
+                totalSilver = data.totalSilver || 0;
+                console.log("Player data loaded from Firestore.");
+            } else {
+                console.log("No player data found, starting new.");
+            }
+            updateUI();
+        }).catch(error => console.error("Error loading data: ", error));
+    }
+}
+
+// --- UI Functions ---
 function showDiscoveryImage(imageSrc) {
-    let itemIconsContainer = document.getElementById('itemIconsContainer');
+    const itemIconsContainer = document.getElementById('itemIconsContainer');
     itemIconsContainer.style.display = 'flex';
 
-    let itemIcons = document.getElementById('itemIcons');
+    const itemIcons = document.getElementById('itemIcons');
     itemIcons.style.display = 'flex';
-
-    // Clear previous item icons
     itemIcons.innerHTML = '';
 
-    let itemIcon = document.createElement('img');
+    const itemIcon = document.createElement('img');
     itemIcon.src = imageSrc;
     itemIcon.alt = 'Discovery Image';
     itemIcon.style.width = '50px';
@@ -22,32 +68,28 @@ function showDiscoveryImage(imageSrc) {
     itemIcons.appendChild(itemIcon);
 }
 
-// Function to update the UI
 function updateUI() {
-    document.getElementById("itemCount").textContent = "Discoveries: " + itemCount;
     updateItemIcon('woodCountRect', woodCount);
     updateItemIcon('stoneCountRect', stoneCount);
+    document.getElementById("silverEarned").textContent = totalSilver;
 }
 
-// Function to display a message
 function displayMessage(message) {
     document.getElementById("message").textContent = message;
 }
 
-// Function to update the count of a specific item
 function updateItemIcon(countId, count) {
-    let itemCountDisplay = document.getElementById(countId);
+    const itemCountDisplay = document.getElementById(countId);
     if (itemCountDisplay) {
         itemCountDisplay.textContent = count;
     }
 }
 
-// Function to handle exploring
+// --- Game Logic ---
 function goExploring() {
-    let random = Math.random();
+    const random = Math.random();
 
     if (random <= 0.4) {
-        itemCount++;
         let message = "Congratulations, you have discovered a ";
         if (random < 0.3) {
             message += "Wood";
@@ -64,47 +106,11 @@ function goExploring() {
         displayMessage("You explored the area but found nothing.");
         showDiscoveryImage('Assets/no_item.png');
     }
-
     updateUI();
 }
 
-// Function to save items to local/session storage
-function saveItems() {
-    sessionStorage.setItem("itemCount", itemCount);
-    localStorage.setItem("woodCount", woodCount);
-    localStorage.setItem("stoneCount", stoneCount);
-}
-
-// Function to load items from local/session storage
-function loadItems() {
-    let isFirstTime = sessionStorage.getItem("isFirstTime") === null;
-
-    if (isFirstTime) {
-        itemCount = 0;
-        sessionStorage.setItem("itemCount", itemCount);
-        sessionStorage.setItem("isFirstTime", "false");
-    } else {
-        itemCount = parseInt(sessionStorage.getItem("itemCount")) || 0;
-    }
-
-    woodCount = parseInt(localStorage.getItem("woodCount")) || 0;
-    stoneCount = parseInt(localStorage.getItem("stoneCount")) || 0;
-    updateUI();
-}
-
-// Function to clear exploration data
-function clearExplorationData() {
-    itemCount = 0;
-    sessionStorage.removeItem("itemCount");
-    sessionStorage.removeItem("isFirstTime");
-    updateUI();
-}
-
-// Add event listeners
+// --- Event Listeners ---
 const exploreBtn = document.getElementById("exploreButton");
 if (exploreBtn) {
     exploreBtn.addEventListener("click", goExploring);
 }
-
-// Load items when the document is ready
-document.addEventListener("DOMContentLoaded", loadItems);

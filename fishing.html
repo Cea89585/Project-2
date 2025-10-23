@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fishing Area</title>
+    <title>Fishing</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <nav>
         <a href="index.html">Home</a>
@@ -14,48 +15,51 @@
         <a href="fishing.html">Fishing</a>
         <a href="shop.html">Shop</a>
         <a href="about.html">About</a>
+        <span id="nav-silver">Silver: 0</span>
     </nav>
     <header>
-        <button class="back-button" onclick="goBack()">Back</button>
-        <h1>Welcome to the Fishing Area</h1>
+        <h1>Go Fish</h1>
         <div class="content">
             <div id="introText">
-                <p>Embark on a fishing adventure and explore the world of WeSurvive!</p>
+                <p>Fishing is a great way to earn silver</p>
             </div>
             <div id="itemIconsContainer" class="window">
                 <div id="fishIcons"></div>
             </div>
             <div id="itemInfoRect">
                 <div id="item-icon">
-                    <img src="Assets/yellow_perch.png" alt="Fish Icon">
+                    <img src="Assets/yellow_perch.png" alt="Item Icon">
                 </div>
                 <p class="itemCountDisplay" id="yellowPerchCount">0</p>
+                <button id="sellYellowPerchBtn">Sell</button>
                 <div id="item-icon">
-                    <img src="Assets/trout.png" alt="Fish Icon">
+                    <img src="Assets/trout.png" alt="Item Icon">
                 </div>
                 <p class="itemCountDisplay" id="troutCount">0</p>
+                <button id="sellTroutBtn">Sell</button>
             </div>
             <div id="itemInfo">
-                <p id="fishCount"></p>
+                <p id="itemCount"></p>
                 <div id="message"></div>
             </div>
         </div>
-        <button id="catchFishButton" class="nav-button1">Catch Fish</button>
-        <a href="shop.html" class="nav-button1">Go to Shop</a>
+        <button id="catchFishButton" class="nav-button1">Catch a fish</button>
     </header>
+
     <footer>
         <p>&copy; 2024 We Survive. All rights reserved.</p>
         <p>Contacts: cea89585@gmail.com</p>
     </footer>
 
+    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+
+    <!-- Config and Game Logic -->
     <script src="firebase-config.js"></script>
+    <script src="nav.js"></script>
     <script src="fishingScript.js"></script>
-    <script>
-        function goBack() {
-            window.history.back();
-        }
-    </script>
+
 </body>
 </html>

@@ -1,68 +1,78 @@
 
+let totalSilver = 0;
+let pickaxeCount = 0;
+let userId = null;
+
+// --- Authentication Check ---
 document.addEventListener("DOMContentLoaded", () => {
-    const inventoryItemsContainer = document.getElementById("inventoryItems");
-    const sellAllButton = document.getElementById("sellAllButton");
-
-    let items = [
-        { name: "Wood", count: 0, price: 5, locked: false },
-        { name: "Stone", count: 0, price: 2, locked: false },
-        { name: "Yellow Perch", count: 0, price: 10, locked: false },
-        { name: "Trout", count: 0, price: 15, locked: false }
-    ];
-
-    function loadInventory() {
-        items.forEach(item => {
-            const itemCount = parseInt(localStorage.getItem(`${item.name.toLowerCase()}Count`)) || 0;
-            item.count = itemCount;
-        });
-        renderInventory();
-    }
-
-    function renderInventory() {
-        inventoryItemsContainer.innerHTML = "";
-        items.forEach((item, index) => {
-            const itemDiv = document.createElement("div");
-            itemDiv.classList.add("inventory-item");
-            if (item.locked) {
-                itemDiv.classList.add("locked");
+    auth.onAuthStateChanged(user => {
+        if (user) {
+            userId = user.uid;
+            loadItems();
+        } else {
+            if (window.location.pathname !== '/auth.html') {
+                window.location.href = 'auth.html';
             }
-
-            const itemName = document.createElement("span");
-            itemName.textContent = `${item.name}: ${item.count}`;
-
-            const lockButton = document.createElement("button");
-            lockButton.textContent = item.locked ? "Unlock" : "Lock";
-            lockButton.addEventListener("click", () => toggleLock(index));
-
-            itemDiv.appendChild(itemName);
-            itemDiv.appendChild(lockButton);
-            inventoryItemsContainer.appendChild(itemDiv);
-        });
-    }
-
-    function toggleLock(index) {
-        items[index].locked = !items[index].locked;
-        renderInventory();
-    }
-
-    function sellAllUnlockedItems() {
-        let totalSilver = parseInt(localStorage.getItem("totalSilver")) || 0;
-        let silverEarned = 0;
-
-        items.forEach(item => {
-            if (!item.locked) {
-                silverEarned += item.count * item.price;
-                localStorage.setItem(`${item.name.toLowerCase()}Count`, 0);
-                item.count = 0;
-            }
-        });
-
-        totalSilver += silverEarned;
-        localStorage.setItem("totalSilver", totalSilver);
-        renderInventory();
-    }
-
-    sellAllButton.addEventListener("click", sellAllUnlockedItems);
-
-    loadInventory();
+        }
+    });
 });
+
+// --- Firestore Functions ---
+function loadItems() {
+    if (db && userId) {
+        db.collection("users").doc(userId).get().then(doc => {
+            if (doc.exists) {
+                const data = doc.data();
+                if (data.inventory) {
+                    pickaxeCount = data.inventory.pickaxe || 0;
+                }
+                totalSilver = data.totalSilver || 0;
+                console.log("Player data loaded from Firestore.");
+            } else {
+                console.log("No player data found, starting new.");
+            }
+            updateUI();
+        }).catch(error => console.error("Error loading data: ", error));
+    }
+}
+
+function saveItems() {
+    if (db && userId) {
+        db.collection("users").doc(userId).set({
+            inventory: {
+                pickaxe: pickaxeCount
+            },
+            totalSilver: totalSilver
+        }, { merge: true })
+        .then(() => console.log("Inventory and silver saved to Firestore"))
+        .catch(error => console.error("Error saving data: ", error));
+    }
+}
+
+// --- UI Functions ---
+function updateUI() {
+    document.getElementById("silverEarned").textContent = totalSilver;
+}
+
+// --- Game Logic ---
+function buyPickaxe() {
+    const pickaxeCost = 100;
+
+    if (totalSilver >= pickaxeCost) {
+        totalSilver -= pickaxeCost;
+        pickaxeCount++;
+
+        saveItems();
+        updateUI();
+
+        alert("You have successfully purchased a pickaxe!");
+    } else {
+        alert("You do not have enough silver to purchase a pickaxe.");
+    }
+}
+
+// --- Event Listeners ---
+const buyPickaxeBtn = document.getElementById("buyPickaxeBtn");
+if (buyPickaxeBtn) {
+    buyPickaxeBtn.addEventListener("click", buyPickaxe);
+}

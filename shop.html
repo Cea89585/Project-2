@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exploring</title>
+    <title>Shop</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <nav>
         <a href="index.html">Home</a>
@@ -17,42 +18,30 @@
         <span id="nav-silver">Silver: 0</span>
     </nav>
     <header>
-        <h1>Go Exploring</h1>
-        <div class="content">
-            <div id="introText">
-                <p>Click the button to see what you can find.</p>
-            </div>
-            <div id="itemIconsContainer" class="window">
-                <div id="itemIcons"></div>
-            </div>
-            <div id="itemInfoRect">
-                <div id="item-icon">
-                    <img src="Assets/Wood.png" alt="Item Icon">
-                </div>
-                <p class="itemCountDisplay" id="woodCountRect">0</p>
-                <div id="item-icon">
-                    <img src="Assets/Stone.png" alt="Item Icon">
-                </div>
-                <p class="itemCountDisplay" id="stoneCountRect">0</p>
-            </div>
-            <div id="itemInfo">
-                <p id="itemCount"></p>
-                <div id="message"></div>
+        <h1>Welcome to the Shop</h1>
+    </header>
+    <main>
+        <div id="shopItems">
+            <h2>Items for Sale</h2>
+            <div class="shop-item">
+                <p>Pickaxe - 100 Silver</p>
+                <button id="buyPickaxeBtn">Buy</button>
             </div>
         </div>
-        <button id="exploreButton" class="nav-button1">Explore</button>
-    </header>
+    </main>
     <footer>
         <p>&copy; 2024 We Survive. All rights reserved.</p>
         <p>Contacts: cea89585@gmail.com</p>
     </footer>
+
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+
     <!-- Config and Game Logic -->
     <script src="firebase-config.js"></script>
     <script src="nav.js"></script>
-    <script src="script.js"></script>
+    <script src="shopScript.js"></script>
 </body>
 </html>
