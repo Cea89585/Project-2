@@ -71,7 +71,10 @@ function showDiscoveryImage(imageSrc) {
 function updateUI() {
     updateItemIcon('woodCountRect', woodCount);
     updateItemIcon('stoneCountRect', stoneCount);
-    document.getElementById("silverEarned").textContent = totalSilver;
+    const silverElement = document.getElementById("nav-silver");
+    if (silverElement) {
+        silverElement.textContent = "Silver: " + totalSilver;
+    }
 }
 
 function displayMessage(message) {

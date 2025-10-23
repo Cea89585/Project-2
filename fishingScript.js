@@ -1,6 +1,7 @@
 
 let yellowPerchCount = 0;
 let troutCount = 0;
+let totalSilver = 0;
 let userId = null;
 
 // --- Authentication Check ---
@@ -25,6 +26,7 @@ function loadItems() {
                     yellowPerchCount = data.inventory.yellowPerch || 0;
                     troutCount = data.inventory.trout || 0;
                 }
+                totalSilver = data.totalSilver || 0;
                 console.log("Player data updated.");
             } else {
                 console.log("No player data found, starting new.");
@@ -38,6 +40,10 @@ function loadItems() {
 function updateUI() {
     document.getElementById("yellowPerchCount").textContent = yellowPerchCount;
     document.getElementById("troutCount").textContent = troutCount;
+    const silverElement = document.getElementById("nav-silver");
+    if (silverElement) {
+        silverElement.textContent = "Silver: " + totalSilver;
+    }
 }
 
 function showFishImage(imageSrc) {
@@ -81,7 +87,7 @@ function catchFish() {
             });
         }
     } else {
-        displayMessage("You fished for a while but didn't catch anything.");
+        displayMessage("You fished for a while but didn\'t catch anything.");
         showFishImage('Assets/no_item.png');
     }
 }
