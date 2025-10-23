@@ -1,12 +1,40 @@
 
 let yellowPerchCount = 0;
 let troutCount = 0;
-let totalSilver = 0; // Keep track of silver locally for now.
+let totalSilver = 0;
 
 document.addEventListener("DOMContentLoaded", () => {
-    // No auth check for now.
-    updateUI();
+    auth.onAuthStateChanged(user => {
+        if (user) {
+            loadUserSilver(user.uid);
+            loadFish(user.uid);
+        } else {
+            updateUI();
+        }
+    });
 });
+
+function loadUserSilver(uid) {
+    const userRef = db.collection('users').doc(uid);
+    userRef.get().then(doc => {
+        if (doc.exists) {
+            totalSilver = doc.data().silver || 0;
+            updateUI();
+        }
+    });
+}
+
+function loadFish(uid) {
+    const userRef = db.collection('users').doc(uid);
+    userRef.get().then(doc => {
+        if (doc.exists) {
+            const data = doc.data();
+            yellowPerchCount = data.yellowPerchCount || 0;
+            troutCount = data.troutCount || 0;
+            updateUI();
+        }
+    });
+}
 
 function updateUI() {
     document.getElementById("yellowPerchCount").textContent = yellowPerchCount;
@@ -49,11 +77,23 @@ function catchFish() {
             showFishImage('Assets/trout.png');
         }
         displayMessage(message);
+        saveFish();
     } else {
         displayMessage("You fished for a while but didn't catch anything.");
         showFishImage('Assets/no_item.png');
     }
     updateUI();
+}
+
+function saveFish() {
+    const user = auth.currentUser;
+    if (user) {
+        const userRef = db.collection('users').doc(user.uid);
+        userRef.set({
+            yellowPerchCount: yellowPerchCount,
+            troutCount: troutCount
+        }, { merge: true });
+    }
 }
 
 function sellYellowPerch() {
@@ -62,6 +102,8 @@ function sellYellowPerch() {
         totalSilver += 10;
         alert("You sold 1 yellow perch for 10 silver.");
         updateUI();
+        saveFish();
+        saveSilver();
     } else {
         alert("You have no yellow perch to sell.");
     }
@@ -73,8 +115,20 @@ function sellTrout() {
         totalSilver += 25;
         alert("You sold 1 trout for 25 silver.");
         updateUI();
+        saveFish();
+        saveSilver();
     } else {
         alert("You have no trout to sell.");
+    }
+}
+
+function saveSilver() {
+    const user = auth.currentUser;
+    if (user) {
+        const userRef = db.collection('users').doc(user.uid);
+        userRef.set({
+            silver: totalSilver
+        }, { merge: true });
     }
 }
 

@@ -23,7 +23,7 @@ function loadNavSilver() {
         userRef.onSnapshot(doc => {
             if (doc.exists) {
                 const data = doc.data();
-                totalSilver = data.totalSilver || 0;
+                totalSilver = data.silver || 0;
                 console.log("Nav silver updated.");
             } else {
                 console.log("No player data found for nav silver.");

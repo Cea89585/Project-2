@@ -15,6 +15,7 @@
         <a href="fishing.html">Fishing</a>
         <a href="shop.html">Shop</a>
         <a href="about.html">About</a>
+        <span id="nav-silver">Silver: 0</span>
     </nav>
     <header>
         <h1>Welcome to your inventory</h1>
@@ -24,7 +25,7 @@
         <a href="shop.html" class="nav-button1">Go to Shop</a>
         <div class="bottom-column">
             <button class="icon-button"></button>
-            <span class="icon-text" id="silverEarned">0</span>        
+            <span class="icon-text" id="silverEarned">0</span>
         </div>
         <div id="shopItems">
             <h2>Shop Items</h2>
@@ -42,29 +43,48 @@
         <p>&copy; 2024 We Survive. All rights reserved.</p>
         <p>Contacts: cea89585@gmail.com</p>
     </footer>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+
+    <!-- Config and Game Logic -->
+    <script src="firebase-config.js"></script>
+    <script src="nav.js"></script>
     <script>
         function goBack() {
             window.history.back();
         }
 
-        function loadItems() {
-            let woodCount = parseInt(localStorage.getItem("woodCount")) || 0;
-            let stoneCount = parseInt(localStorage.getItem("stoneCount")) || 0;
-            let pickaxeCount = parseInt(localStorage.getItem("pickaxeCount")) || 0;
-            document.getElementById("woodAmount").textContent = woodCount;
-            document.getElementById("stoneAmount").textContent = stoneCount;
-            document.getElementById("pickaxeAmount").textContent = pickaxeCount;
+        document.addEventListener("DOMContentLoaded", () => {
+            auth.onAuthStateChanged(user => {
+                if (user) {
+                    loadItems(user.uid);
+                } else {
+                    console.log("User not logged in.");
+                }
+            });
+        });
 
-            let yellowPerchCount = parseInt(localStorage.getItem("yellowPerchCount")) || 0;
-            let troutCount = parseInt(localStorage.getItem("troutCount")) || 0;
-            document.getElementById("yellowPerchAmount").textContent = yellowPerchCount;
-            document.getElementById("troutAmount").textContent = troutCount;
-
-            let totalSilver = parseInt(localStorage.getItem("totalSilver")) || 0;
-            document.getElementById("silverEarned").textContent = totalSilver;
+        function loadItems(uid) {
+            const userRef = db.collection('users').doc(uid);
+            userRef.onSnapshot(doc => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    document.getElementById("woodAmount").textContent = data.woodCount || 0;
+                    document.getElementById("stoneAmount").textContent = data.stoneCount || 0;
+                    document.getElementById("pickaxeAmount").textContent = data.pickaxeCount || 0;
+                    document.getElementById("yellowPerchAmount").textContent = data.yellowPerchCount || 0;
+                    document.getElementById("troutAmount").textContent = data.troutCount || 0;
+                    document.getElementById("silverEarned").textContent = data.silver || 0;
+                } else {
+                    console.log("No such document!");
+                }
+            }, error => {
+                console.log("Error getting document:", error);
+            });
         }
-
-        document.addEventListener("DOMContentLoaded", loadItems);
     </script>
 </body>
 </html>

@@ -1,11 +1,17 @@
 
 let woodCount = 0;
 let stoneCount = 0;
-let totalSilver = 0; // Keep track of silver locally for now.
+let totalSilver = 0;
 
 document.addEventListener("DOMContentLoaded", () => {
-    // No auth check for now.
-    updateUI();
+    auth.onAuthStateChanged(user => {
+        if (user) {
+            loadUserSilver(user.uid);
+            loadItems(user.uid);
+        } else {
+            updateUI();
+        }
+    });
 });
 
 function showDiscoveryImage(imageSrc) {
@@ -22,6 +28,28 @@ function showDiscoveryImage(imageSrc) {
     itemIcon.style.width = '50px';
     itemIcon.style.height = '50px';
     itemIcons.appendChild(itemIcon);
+}
+
+function loadUserSilver(uid) {
+    const userRef = db.collection('users').doc(uid);
+    userRef.get().then(doc => {
+        if (doc.exists) {
+            totalSilver = doc.data().silver || 0;
+            updateUI();
+        }
+    });
+}
+
+function loadItems(uid) {
+    const userRef = db.collection('users').doc(uid);
+    userRef.get().then(doc => {
+        if (doc.exists) {
+            const data = doc.data();
+            woodCount = data.woodCount || 0;
+            stoneCount = data.stoneCount || 0;
+            updateUI();
+        }
+    });
 }
 
 function updateUI() {
@@ -59,12 +87,23 @@ function goExploring() {
             showDiscoveryImage('Assets/Stone.png');
         }
         displayMessage(message);
-        // saveItems(); // Removed Firebase call
+        saveItems();
     } else {
         displayMessage("You explored the area but found nothing.");
         showDiscoveryImage('Assets/no_item.png');
     }
     updateUI();
+}
+
+function saveItems() {
+    const user = auth.currentUser;
+    if (user) {
+        const userRef = db.collection('users').doc(user.uid);
+        userRef.set({
+            woodCount: woodCount,
+            stoneCount: stoneCount
+        }, { merge: true });
+    }
 }
 
 const exploreBtn = document.getElementById("exploreButton");
