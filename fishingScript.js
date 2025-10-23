@@ -1,42 +1,13 @@
 
 let yellowPerchCount = 0;
 let troutCount = 0;
-let totalSilver = 0;
-let userId = null;
+let totalSilver = 0; // Keep track of silver locally for now.
 
-// --- Authentication Check ---
 document.addEventListener("DOMContentLoaded", () => {
-    auth.onAuthStateChanged(user => {
-        if (user) {
-            userId = user.uid;
-            loadItems();
-        } else {
-            // nav.js should handle the redirect
-        }
-    });
+    // No auth check for now.
+    updateUI();
 });
 
-// --- Firestore Functions ---
-function loadItems() {
-    if (db && userId) {
-        db.collection("users").doc(userId).onSnapshot(doc => {
-            if (doc.exists) {
-                const data = doc.data();
-                if (data.inventory) {
-                    yellowPerchCount = data.inventory.yellowPerch || 0;
-                    troutCount = data.inventory.trout || 0;
-                }
-                totalSilver = data.totalSilver || 0;
-                console.log("Player data updated.");
-            } else {
-                console.log("No player data found, starting new.");
-            }
-            updateUI();
-        });
-    }
-}
-
-// --- UI Functions ---
 function updateUI() {
     document.getElementById("yellowPerchCount").textContent = yellowPerchCount;
     document.getElementById("troutCount").textContent = troutCount;
@@ -63,42 +34,34 @@ function displayMessage(message) {
     document.getElementById("message").textContent = message;
 }
 
-// --- Game Logic ---
 function catchFish() {
     const random = Math.random();
     let message = "Congratulations, you have caught a ";
 
     if (random < 0.6) { // 60% chance to catch a fish
-        let itemCaught = null;
         if (random < 0.4) { // 40% chance for Yellow Perch
             message += "Yellow Perch";
-            itemCaught = "yellowPerch";
+            yellowPerchCount++;
             showFishImage('Assets/yellow_perch.png');
         } else { // 20% chance for Trout
             message += "Trout";
-            itemCaught = "trout";
+            troutCount++;
             showFishImage('Assets/trout.png');
         }
         displayMessage(message);
-
-        if (itemCaught && db && userId) {
-            db.collection("users").doc(userId).update({
-                [`inventory.${itemCaught}`]: firebase.firestore.FieldValue.increment(1)
-            });
-        }
     } else {
-        displayMessage("You fished for a while but didn\'t catch anything.");
+        displayMessage("You fished for a while but didn't catch anything.");
         showFishImage('Assets/no_item.png');
     }
+    updateUI();
 }
 
 function sellYellowPerch() {
     if (yellowPerchCount > 0) {
-        db.collection("users").doc(userId).update({
-            "inventory.yellowPerch": firebase.firestore.FieldValue.increment(-1),
-            "totalSilver": firebase.firestore.FieldValue.increment(10)
-        });
+        yellowPerchCount--;
+        totalSilver += 10;
         alert("You sold 1 yellow perch for 10 silver.");
+        updateUI();
     } else {
         alert("You have no yellow perch to sell.");
     }
@@ -106,18 +69,15 @@ function sellYellowPerch() {
 
 function sellTrout() {
     if (troutCount > 0) {
-        db.collection("users").doc(userId).update({
-            "inventory.trout": firebase.firestore.FieldValue.increment(-1),
-            "totalSilver": firebase.firestore.FieldValue.increment(25)
-        });
+        troutCount--;
+        totalSilver += 25;
         alert("You sold 1 trout for 25 silver.");
+        updateUI();
     } else {
         alert("You have no trout to sell.");
     }
 }
 
-
-// --- Event Listeners ---
 const catchFishBtn = document.getElementById("catchFishButton");
 if (catchFishBtn) {
     catchFishBtn.addEventListener("click", catchFish);

@@ -1,57 +1,13 @@
 
 let woodCount = 0;
 let stoneCount = 0;
-let totalSilver = 0;
-let userId = null;
+let totalSilver = 0; // Keep track of silver locally for now.
 
-// --- Authentication Check ---
 document.addEventListener("DOMContentLoaded", () => {
-    auth.onAuthStateChanged(user => {
-        if (user) {
-            userId = user.uid;
-            loadItems();
-        } else {
-            if (window.location.pathname !== '/auth.html') {
-                window.location.href = 'auth.html';
-            }
-        }
-    });
+    // No auth check for now.
+    updateUI();
 });
 
-// --- Firestore Functions ---
-function saveItems() {
-    if (db && userId) {
-        db.collection("users").doc(userId).set({
-            inventory: {
-                wood: woodCount,
-                stone: stoneCount
-            }
-        }, { merge: true })
-        .then(() => console.log("Inventory saved to Firestore"))
-        .catch(error => console.error("Error saving inventory: ", error));
-    }
-}
-
-function loadItems() {
-    if (db && userId) {
-        db.collection("users").doc(userId).get().then(doc => {
-            if (doc.exists) {
-                const data = doc.data();
-                if (data.inventory) {
-                    woodCount = data.inventory.wood || 0;
-                    stoneCount = data.inventory.stone || 0;
-                }
-                totalSilver = data.totalSilver || 0;
-                console.log("Player data loaded from Firestore.");
-            } else {
-                console.log("No player data found, starting new.");
-            }
-            updateUI();
-        }).catch(error => console.error("Error loading data: ", error));
-    }
-}
-
-// --- UI Functions ---
 function showDiscoveryImage(imageSrc) {
     const itemIconsContainer = document.getElementById('itemIconsContainer');
     itemIconsContainer.style.display = 'flex';
@@ -88,7 +44,6 @@ function updateItemIcon(countId, count) {
     }
 }
 
-// --- Game Logic ---
 function goExploring() {
     const random = Math.random();
 
@@ -104,7 +59,7 @@ function goExploring() {
             showDiscoveryImage('Assets/Stone.png');
         }
         displayMessage(message);
-        saveItems();
+        // saveItems(); // Removed Firebase call
     } else {
         displayMessage("You explored the area but found nothing.");
         showDiscoveryImage('Assets/no_item.png');
@@ -112,7 +67,6 @@ function goExploring() {
     updateUI();
 }
 
-// --- Event Listeners ---
 const exploreBtn = document.getElementById("exploreButton");
 if (exploreBtn) {
     exploreBtn.addEventListener("click", goExploring);
