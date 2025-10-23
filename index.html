@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Home - We Survive</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -17,23 +17,41 @@
         <a href="about.html">About</a>
         <span id="nav-silver">Silver: 0</span>
     </nav>
+
     <header>
-        <h1>Welcome to the game</h1>
-        <button class="nav-button1" onclick="window.location.href='inventory.html'">
-            <span class="icon-img3"></span>
-            <span class="icon-text">Inventory</span>
-        </button>
-        <button class="nav-button1" onclick="window.location.href='fishing.html'">
-            <span class="icon-img4"></span>
-            <span class="icon-text">Fishing</span>
-        </button>
+        <h1>Welcome to We Survive</h1>
+        <p>This is your central hub. Choose an activity to begin.</p>
     </header>
-    <main>
+
+    <main class="dashboard">
+        <button class="dashboard-button" onclick="window.location.href='exploring.html'">
+            <span class="button-text">Go Exploring</span>
+            <span class="button-description">Gather resources from the wild.</span>
+        </button>
+        <button class="dashboard-button" onclick="window.location.href='workshop.html'">
+            <span class="button-text">Visit the Workshop</span>
+            <span class="button-description">Craft new items and tools.</span>
+        </button>
+        <button class="dashboard-button" onclick="window.location.href='fishing.html'">
+            <span class="button-text">Go Fishing</span>
+            <span class="button-description">Catch fish to sell for silver.</span>
+        </button>
+        <button class="dashboard-button" onclick="window.location.href='shop.html'">
+            <span class="button-text">Enter the Shop</span>
+            <span class="button-description">Buy and sell goods.</span>
+        </button>
+        <button class="dashboard-button" onclick="window.location.href='about.html'">
+            <span class="button-text">About the Game</span>
+            <span class="button-description">Learn more about the project.</span>
+        </button>
     </main>
+
     <footer>
         <p>&copy; 2024 We Survive. All rights reserved.</p>
         <p>Contacts: cea89585@gmail.com</p>
     </footer>
+
+    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
